@@ -1,12 +1,12 @@
 <head>
   <title>SDhacks</title>
-
+  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCycdCeB3hwdxOxNJralLp-RGjqn13ZAaU&libraries=geometry,places"></script>
   <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
   <meta charset="utf-8">
 </head>
 
 <body>
-
+  <div>
     <!--Import Google Icon Font-->
     <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link href='https://fonts.googleapis.com/css?family=Source+Sans+Pro' rel='stylesheet' type='text/css'>
@@ -83,7 +83,7 @@
 
   <div class = "collection">
   <a href="/event/{{_id}}" class = "collection-item">
-  <h5>{{name}}</h5>
+  <h5>{{name}} {{#if close}}***{{/if}}</h5>
     <div id = "details">
 
         <b>Date & Time:</b> &nbsp; {{time}} <br>

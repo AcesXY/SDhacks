@@ -7,7 +7,8 @@ import { getTimespanText } from "../imports/date.js"
 Template.create_wrapper.events({
 	'submit .create_event'(event) {
 		//stop from reloading the page
-		event.preventDefault();
+
+		
 
 		//constructing object data
 		const form = event.target;
@@ -25,7 +26,6 @@ Template.create_wrapper.events({
 			time: getTimespanText(start, end),
 			createdAt: new Date()
 		};
-		console.log(formData);
 
 		//adding it to the database
 		Meteor.call('events.create', formData);

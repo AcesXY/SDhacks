@@ -7,6 +7,16 @@ import { ReactiveDict } from 'meteor/reactive-dict';
 import './main.html';
 import './getevent.html';
 
+
+
+const location = {
+  current: undefined,
+  radius: 2 //kilometers
+}
+
+
+
+
 BlazeLayout.setRoot('body');
 
 function getDateString(timestamp, text) {
@@ -21,24 +31,58 @@ function getDateString(timestamp, text) {
   }
 }
 
+Template.curevents.onCreated(function bodyOnCreated() {
+  const state = new ReactiveDict();
+  this.state = state;
+  this.state.set('location set', false);
+  navigator.geolocation.getCurrentPosition((pos) => {
+    location.current = new google.maps.LatLng(pos.coords.latitude, pos.coords.longitude);
+    state.set('location set', true);
+  }, function() {}, {enableHighAccuracy: true});
+});
+
 Template.getevent.onCreated(function bodyOnCreated() {
   this.state = new ReactiveDict();
 });
 
-Template.getevent.onRendered(function() {
+  Template.getevent.onRendered(function() {
   $("p").text("");
 });
 
 Template.curevents.helpers({
 	live_events: function() {
     const currTime = Date.now();
-    let events = Events.find({ start_time: {$lt: currTime}, end_time: {$gt: currTime} }, { sort: { start_time: 1 }});
-    return events.map(e => {e.time = getDateString(e.start_time, e.time); return e;});
+    let events = Events
+      .find({ start_time: {$lt: currTime}, end_time: {$gt: currTime} }, { sort: { start_time: 1 }})
+      .map(e => {e.close = false; e.time = getDateString(e.start_time, e.time); return e;});
+
+    const instance = Template.instance();
+    if (instance.state.get('location set')) {
+      return events.map(e => {
+        e.close = google.maps.geometry.spherical.computeDistanceBetween(location.current, new google.maps.LatLng(e.lat, e.lng)) / 1000 <= location.radius;
+        return e;
+      });
+    }
+    else {
+      return events;
+    }
   },
   future_events: function() {
     const currTime = Date.now();
-    let events = Events.find({ start_time: {$gt: currTime} }, { sort: { start_time: 1 }});
-    return events.map(e => {e.time = getDateString(e.start_time, e.time); return e;});
+    let events = Events
+      .find({ start_time: {$gt: currTime} }, { sort: { start_time: 1 }})
+      .map(e => {e.close = false; e.time = getDateString(e.start_time, e.time); return e;});
+
+    const instance = Template.instance();
+    if (instance.state.get('location set')) {
+      return events.map(e => {
+        e.close = google.maps.geometry.spherical.computeDistanceBetween(location.current, new google.maps.LatLng(e.lat, e.lng)) / 1000 <= location.radius;
+        return e;
+      });
+    }
+    else {
+      return events;
+    }
   }
 });
 
