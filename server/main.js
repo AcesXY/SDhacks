@@ -60,16 +60,20 @@ Meteor.methods({
   //   res.picture = response.data.url;
   		let start = Date.parse(res.start_time),
   		end = Date.parse(res.end_time);
+      if(start && end) {
+        var time = getTimespanText(start, end);
+      }
+
   		Meteor.call('events.create', {
 			name: res.name,
-			description: res.description,
-			loc: res.place.name,
-			lat: res.place.location.latitude,
-			lng: res.place.location.longitude,
+			description: res.description || null,
+			loc: res.place.name || null,
+			lat: res.place.location.latitude || null,
+			lng: res.place.location.longitude || null,
 
-			time: getTimespanText(start, end),
-			start_time: start,
-			end_time: end,
+			time: time || null,
+			start_time: start || null,
+			end_time: end || null,
 
 			createdAt: new Date(),
       		// picture: res.picture

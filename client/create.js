@@ -29,5 +29,7 @@ Template.create_wrapper.events({
 
 		//adding it to the database
 		Meteor.call('events.create', formData);
+
+		FlowRouter.go('/');
 	}
 });
