@@ -63,13 +63,17 @@ Meteor.methods({
       if(start && end) {
         var time = getTimespanText(start, end);
       }
+      if(res.place.location) {
+        var lat = res.place.location.latitude;
+        var lng = res.place.location.longitude;
+      }
 
   		Meteor.call('events.create', {
 			name: res.name,
 			description: res.description || null,
 			loc: res.place.name || null,
-			lat: res.place.location.latitude || null,
-			lng: res.place.location.longitude || null,
+			lat: lat || null,
+			lng: lng || null,
 
 			time: time || null,
 			start_time: start || null,

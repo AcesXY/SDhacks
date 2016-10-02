@@ -11,7 +11,7 @@ import './getevent.html';
 
 const location = {
   current: undefined,
-  radius: 2 //kilometers
+  radius: 0.0 //kilometers
 }
 
 
@@ -59,7 +59,7 @@ Template.curevents.helpers({
     const instance = Template.instance();
     if (instance.state.get('location set')) {
       return events.map(e => {
-        e.close = google.maps.geometry.spherical.computeDistanceBetween(location.current, new google.maps.LatLng(e.lat, e.lng)) / 1000 <= location.radius;
+        e.close = (google.maps.geometry.spherical.computeDistanceBetween(location.current, new google.maps.LatLng(e.lat, e.lng)) / 1000) < location.radius;
         return e;
       });
     }
@@ -76,7 +76,7 @@ Template.curevents.helpers({
     const instance = Template.instance();
     if (instance.state.get('location set')) {
       return events.map(e => {
-        e.close = google.maps.geometry.spherical.computeDistanceBetween(location.current, new google.maps.LatLng(e.lat, e.lng)) / 1000 <= location.radius;
+        e.close = (google.maps.geometry.spherical.computeDistanceBetween(location.current, new google.maps.LatLng(e.lat, e.lng)) / 1000) <= location.radius;
         return e;
       });
     }
