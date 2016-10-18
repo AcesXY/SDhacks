@@ -49,7 +49,7 @@ Meteor.methods({
 		identifier = eventurl.substring(eventurl.lastIndexOf("/"));
 
 		var res = FB.mapi(identifier, {
-			access_token: "249276968799606|SbS-5WRPQ8h1YxQmHTNFaw8i3J8"
+			access_token: "removed" //todo: add FB access token here
 		});
 
 		// var response = FB.mapi(

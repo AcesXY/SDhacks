@@ -10,7 +10,7 @@ Meteor.methods({
 		Events.insert(res);
 
 		//posting to evenbrite
-		const tokenParam = "?token=6XZGEV3DXPBLJKFD2J7J";
+		const tokenParam = "?token=removed"; //todo: add EventBright api key here
 		HTTP.call('POST',
 			"https://www.eventbriteapi.com/v3/events/" + tokenParam,
 			{
